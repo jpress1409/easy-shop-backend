@@ -1,8 +1,8 @@
-package org.yearup.data.mysql;
+package org.yearup.data.mysql.impl;
 
 import org.springframework.stereotype.Component;
+import org.yearup.data.mysql.interfaces.ProductDao;
 import org.yearup.models.Product;
-import org.yearup.data.ProductDao;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;

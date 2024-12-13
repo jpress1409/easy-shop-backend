@@ -1,4 +1,4 @@
-package org.yearup.data;
+package org.yearup.data.mysql.interfaces;
 
 import org.yearup.models.User;
 

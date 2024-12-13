@@ -1,12 +1,11 @@
 package org.yearup.data.mysql;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.yearup.data.mysql.impl.MySqlProductDao;
 import org.yearup.models.Product;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -5,9 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.yearup.models.Category;
 import org.yearup.models.Product;
-import org.yearup.data.ProductDao;
+import org.yearup.data.mysql.interfaces.ProductDao;
 
 import java.math.BigDecimal;
 import java.util.List;

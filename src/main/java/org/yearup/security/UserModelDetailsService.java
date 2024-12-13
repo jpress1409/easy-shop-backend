@@ -1,7 +1,7 @@
 package org.yearup.security;
 
 
-import org.yearup.data.UserDao;
+import org.yearup.data.mysql.interfaces.UserDao;
 import org.yearup.models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
