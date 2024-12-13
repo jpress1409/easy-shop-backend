@@ -122,7 +122,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
 
             deleteStatement.setInt(1, categoryId);
             deleteStatement.executeUpdate();
-            
+
         }catch(SQLException e){
             e.printStackTrace();}
     }
