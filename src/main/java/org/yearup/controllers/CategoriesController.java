@@ -12,7 +12,7 @@ import org.yearup.models.Product;
 import java.util.List;
 
 
-// add annotation to allow cross site origin requests
+@CrossOrigin
 @RestController
 @RequestMapping("/categories")
 public class CategoriesController
@@ -21,21 +21,22 @@ public class CategoriesController
     private ProductDao productDao;
 
     @Autowired
-    public CategoriesController(CategoryDao categoryDao, ProductDao productDao){
+    public CategoriesController(CategoryDao categoryDao){
         this.categoryDao = categoryDao;
-        this.productDao = productDao;
+
+
     }
 
 
 
     @PreAuthorize("permitAll()")
-    @RequestMapping(path = "/categories", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public List<Category> getAll() {
         return categoryDao.getAllCategories();
     }
 
     @PreAuthorize("permitAll()")
-    @RequestMapping(path = "/categories/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     public Category getById(@PathVariable int id) {
         return categoryDao.getById(id);
     }
@@ -43,20 +44,20 @@ public class CategoriesController
     // the url to return all products in category 1 would look like this
     // https://localhost:8080/categories/1/products
     @PreAuthorize("permitAll()")
-    @GetMapping("/category/{categoryId}/products")
+    @GetMapping(path = "/{categoryId}/products")
     public List<Product> getProductsById(@PathVariable int categoryId) {
         return productDao.listByCategoryId(categoryId);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(path = "/category", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
     public Category addCategory(@RequestBody Category category) {
         return categoryDao.create(category);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(path = "/category/{id}", method = RequestMethod.PUT)
+    @RequestMapping(method = RequestMethod.PUT)
     // add annotation to ensure that only an ADMIN can call this function
     public void updateCategory(@PathVariable int id, @RequestBody Category category) {
         categoryDao.update(id, category);
@@ -64,7 +65,7 @@ public class CategoriesController
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(path = "/category/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
     // add annotation to ensure that only an ADMIN can call this function
     public void deleteCategory(@PathVariable int id) {
         categoryDao.delete(id);

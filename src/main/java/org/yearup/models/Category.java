@@ -6,8 +6,7 @@ public class Category
     private String name;
     private String description;
 
-    public Category()
-    {
+    public Category() {
     }
 
     public Category(int categoryId, String name, String description)
