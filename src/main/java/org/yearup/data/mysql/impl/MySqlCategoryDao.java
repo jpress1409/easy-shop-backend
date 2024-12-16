@@ -26,16 +26,12 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         List<Category> categories = new ArrayList<>();
         String allCatQuery = "SELECT * FROM categories";
 
-        try(Connection connection = getConnection();
-            PreparedStatement allStatement = connection.prepareStatement(allCatQuery);
-            ResultSet results = allStatement.executeQuery()){
+        try (Connection connection = getConnection();
+             PreparedStatement allStatement = connection.prepareStatement(allCatQuery);
+             ResultSet results = allStatement.executeQuery()) {
 
-            while(results.next()){
-                int idFromDb = results.getInt("category_id");
-                String name = results.getString("name");
-                String description = results.getString("description");
-
-                categories.add(new Category(idFromDb, name, description));
+            while (results.next()) {
+                categories.add(mapRow(results));
             }
         }catch(SQLException e){e.printStackTrace();}
 
@@ -45,7 +41,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     @Override
     public Category getById(int categoryId) {
         Category category = null;
-        String getByIdQuery = "SELECT * FROM category WHERE category_id = ?";
+        String getByIdQuery = "SELECT * FROM categories WHERE category_id = ?";
 
         try(Connection connection = getConnection();
             PreparedStatement getByIdStatement = connection.prepareStatement(getByIdQuery)){
@@ -108,6 +104,10 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         updateStatement.setString(2, category.getDescription());
         updateStatement.setInt(3, categoryId);
 
+        int affectedRows = updateStatement.executeUpdate();
+        if (affectedRows == 0) {
+            throw new SQLException("No category found with the given ID to update.");
+        }
     }catch(SQLException e){
         e.printStackTrace();}
     }
@@ -120,10 +120,15 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
             PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)){
 
             deleteStatement.setInt(1, categoryId);
-            deleteStatement.executeUpdate();
 
-        }catch(SQLException e){
-            e.printStackTrace();}
+            int rowsAffected = deleteStatement.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new SQLException("No category found with ID: " + categoryId);
+            }
+        }catch (SQLException e) {
+            throw new RuntimeException("Error while deleting category with ID: " + categoryId, e);
+        }
     }
 
     private Category mapRow(ResultSet row) throws SQLException

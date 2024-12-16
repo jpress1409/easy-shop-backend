@@ -2,9 +2,8 @@
 
 ## Description of the Project
 
-Briefly describe what this Java console application does. Mention its purpose and who the intended users are. Explain the main functionality and what problems it aims to solve.
+This is an online shopping platform that aims to make shopping easier by allowing to filter products based on multiple metrics and more secure by requiring authentication to add, alter or delete products.
 
-![Class Diagram](path/to/your/class_diagram.png)
 
 ## User Stories
 
@@ -15,7 +14,9 @@ List the user stories that guided the development of your application. Format th
 
 ## Setup
 
-Instructions on how to set up and run the project using IntelliJ IDEA.
+- Open and run package titled, "capstone-starter"
+- Open package title, "capstone-client-web-application"
+- Select browser of choice
 
 ### Prerequisites
 
@@ -34,8 +35,17 @@ Follow these steps to get your application running within IntelliJ IDEA:
 
 ## Technologies Used
 
-- Java: Mention the version you are using.
-- Any additional libraries or frameworks used in the project.
+- Java: JDK 17
+- java.Math.BigDecimal
+- java.util.List
+- java.sql.*
+- org.springframework.beans.factory.annotation.Autowired;
+- org.springframework.http.HttpStatus;
+- org.springframework.security.access.prepost.PreAuthorize;
+- org.springframework.web.bind.annotation.*
+- javax.servlet.http.HttpServletRequest;
+- javax.servlet.http.HttpServletResponse;
+- java.io.IOException;
 
 ## Demo
 
@@ -50,21 +60,11 @@ Outline potential future enhancements or functionalities you might consider addi
 - Additional feature to be developed.
 - Improvement of current functionalities.
 
-## Resources
-
-List resources such as tutorials, articles, or documentation that helped you during the project.
-
-- [Java Programming Tutorial](https://www.example.com)
-- [Effective Java](https://www.example.com)
-
 ## Team Members
 
-- **Name 1** - Specific contributions or roles.
-- **Name 2** - Specific contributions or roles.
+- **Joseph Pressley** - CategoriesController class, added authentication, fixed bugs in filter by price and bug in update() in ProductController class
+- **Raymond Mouron** - skeleton code and API setup
 
 ## Thanks
 
-Express gratitude towards those who provided help, guidance, or resources:
-
-- Thank you to [Mentor's Name] for continuous support and guidance.
-- A special thanks to all teammates for their dedication and teamwork.
+- Thank you to [Raymond Mouron] for continuous support and guidance.S
