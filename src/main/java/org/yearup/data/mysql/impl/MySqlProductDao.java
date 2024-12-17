@@ -114,7 +114,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
         {
             throw new RuntimeException(e);
         }
-        return product;
+        return null;
     }
 
     @Override
@@ -155,7 +155,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
         {
             throw new RuntimeException(e);
         }
-        return product;
+        return null;
     }
 
     @Override

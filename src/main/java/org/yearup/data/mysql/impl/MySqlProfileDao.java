@@ -2,6 +2,7 @@ package org.yearup.data.mysql.impl;
 
 import org.springframework.stereotype.Component;
 import org.yearup.data.mysql.interfaces.ProfileDao;
+import org.yearup.models.Category;
 import org.yearup.models.Profile;
 
 import javax.sql.DataSource;
@@ -42,6 +43,38 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
         {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Profile getById(int userId) {
+        Profile profile = null;
+        String getByIdQuery = "SELECT * FROM profiles WHERE user_id = ?";
+
+        try(Connection connection = getConnection();
+            PreparedStatement getByIdStatement = connection.prepareStatement(getByIdQuery)){
+            getByIdStatement.setInt(1, userId);
+
+            try(ResultSet results = getByIdStatement.executeQuery()){
+                if(results.next()){
+                    profile = new Profile();
+                    getByIdStatement.setInt(1, profile.getUserId());
+                    getByIdStatement.setString(2, profile.getFirstName());
+                    getByIdStatement.setString(3, profile.getLastName());
+                    getByIdStatement.setString(4, profile.getPhone());
+                    getByIdStatement.setString(5, profile.getEmail());
+                    getByIdStatement.setString(6, profile.getAddress());
+                    getByIdStatement.setString(7, profile.getCity());
+                    getByIdStatement.setString(8, profile.getState());
+                    getByIdStatement.setString(9, profile.getZip());
+
+
+                }
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return profile;
     }
 
 }
