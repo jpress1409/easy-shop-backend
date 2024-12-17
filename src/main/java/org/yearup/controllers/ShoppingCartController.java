@@ -11,10 +11,11 @@ import org.yearup.data.mysql.interfaces.UserDao;
 import org.yearup.models.ShoppingCart;
 import org.yearup.models.User;
 
+import javax.imageio.plugins.tiff.GeoTIFFTagSet;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("cart")
+@RequestMapping("/cart")
 @CrossOrigin
 public class ShoppingCartController
 {
@@ -32,6 +33,7 @@ public class ShoppingCartController
 
     // each method in this controller requires a Principal object as a parameter
     @PreAuthorize("isAuthenticated()")
+    @RequestMapping(method = RequestMethod.GET)
     public ShoppingCart getCart(Principal principal)
     {
         try
@@ -54,8 +56,9 @@ public class ShoppingCartController
 
     // add a POST method to add a product to the cart - the url should be
     // https://localhost:8080/cart/products/15 (15 is the productId to be added
-    @PostMapping("products/{id}")
+    @PostMapping("/products/{id}")
     @PreAuthorize("isAuthenticated()")
+    @ResponseStatus(value = HttpStatus.CREATED)
     public ShoppingCart addProduct(@PathVariable int id, Principal principal){
 
         try {
@@ -71,18 +74,25 @@ public class ShoppingCartController
 
     @PutMapping(path = "/products/{id}")
     @PreAuthorize("isAuthenticated()")
-    public void update(@PathVariable int id, Principal principal){
+    public void update(@PathVariable int id, @RequestBody ShoppingCart cart, Principal principal){
         try {
             String userName = principal.getName();
             User user = userDao.getByUserName(userName);
             int userId = user.getId();
 
-            shoppingCartDao.updateCart(id, userId);
+            shoppingCartDao.updateCart(id, userId, cart);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
-
+    @DeleteMapping(path = "/{id}")
+    public void delete(@PathVariable int userId){
+        try{
+            shoppingCartDao.deleteCart(userId);
+        }catch(Exception ex){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
+    }
 }
 
 
