@@ -61,22 +61,25 @@ Follow these steps to get your application running within IntelliJ IDEA:
 
 ## Demo
 
-Include screenshots or GIFs that show your application in action. Use tools like [Giphy Capture](https://giphy.com/apps/giphycapture) to record a GIF of your application.
 
-![Application Screenshot](path/to/your/screenshot.png)
 
 ## Future Work
 
 Outline potential future enhancements or functionalities you might consider adding:
 
-- Additional feature to be developed.
-- Improvement of current functionalities.
+- Design improvements
+
+- A mechanism for checking out
+
+- A more robust price totaling and inventory management system
+
+- Ability to add product picture to cart page
 
 ## Team Members
 
-- **Joseph Pressley** - CategoriesController class, added authentication, fixed bugs in filter by price and bug in update() in ProductController class
+- **Joseph Pressley** - CategoriesController class, added authentication, fixed bugs in filter by price and bug in update() in ProductController class and all mechanisms to read form and write to sql database
 - **Raymond Mouron** - skeleton code and API setup
 
 ## Thanks
 
-- Thank you to [Raymond Mouron] for continuous support and guidance.S
+- Thank you to [Raymond Mouron] for continuous support and guidance.
