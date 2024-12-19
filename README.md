@@ -7,10 +7,21 @@ This is an online shopping platform that aims to make shopping easier by allowin
 
 ## User Stories
 
-List the user stories that guided the development of your application. Format these stories as: "As a [type of user], I want [some goal] so that [some reason]."
+- As a shopper, I want to browse products by categories so that I can easily find items I’m interested in.
 
-- As a user, I want to be able to input my data, so that the application can process it accordingly.
-- As a user, I want to receive immediate feedback, so I can understand what to do next.
+- As a shopper, I want to add products to my shopping cart so that I can purchase them later.
+
+- As a shopper, I want to view, update, and clear my shopping cart so that I can prepare for checkout.
+
+- As a shopper, I want to place an order so that I can purchase items in my cart.
+
+- As an admin, I want to add, update, or delete products so that I can manage the store inventory.
+
+- As an admin, I want to view all orders so that I can monitor sales and manage fulfillment.
+
+- As a developer, I want to use RESTful endpoints so that I can integrate the backend with the frontend application.
+
+- As a QA engineer, I want to test user registration functionality to ensure it works as expected
 
 ## Setup
 
@@ -46,6 +57,7 @@ Follow these steps to get your application running within IntelliJ IDEA:
 - javax.servlet.http.HttpServletRequest;
 - javax.servlet.http.HttpServletResponse;
 - java.io.IOException;
+- Spring Framework sercurity and servlet
 
 ## Demo
 
