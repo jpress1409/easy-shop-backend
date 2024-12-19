@@ -61,7 +61,15 @@ Follow these steps to get your application running within IntelliJ IDEA:
 
 ## Demo
 
-
+![cart-screen.png](app-run-pics%2Fcart-screen.png)
+![homescreen.png](app-run-pics%2Fhomescreen.png)
+![homescreen-logged-in.png](app-run-pics%2Fhomescreen-logged-in.png)
+![postman-opt.png](app-run-pics%2Fpostman-opt.png)
+![postman-reqired.png](app-run-pics%2Fpostman-reqired.png)
+![product-filter.png](app-run-pics%2Fproduct-filter.png)
+![profile-update-page.png](app-run-pics%2Fprofile-update-page.png)
+![sql-db-post-update.png](app-run-pics%2Fsql-db-post-update.png)
+![sql-profiles-pre-edit.png](app-run-pics%2Fsql-profiles-pre-edit.png)
 
 ## Future Work
 
