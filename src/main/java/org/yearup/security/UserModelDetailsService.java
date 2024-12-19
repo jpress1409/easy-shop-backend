@@ -47,4 +47,3 @@ public class UserModelDetailsService implements UserDetailsService {
                 grantedAuthorities);
     }
 }
-

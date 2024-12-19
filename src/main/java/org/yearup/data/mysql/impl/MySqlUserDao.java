@@ -1,19 +1,26 @@
 package org.yearup.data.mysql.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.yearup.data.mysql.interfaces.UserDao;
 import org.yearup.models.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.yearup.security.jwt.TokenProvider;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Component
 public class MySqlUserDao extends MySqlDaoBase implements UserDao
 {
+
+    private final Logger logger = LoggerFactory.getLogger(MySqlUserDao.class);
+
     @Autowired
     public MySqlUserDao(DataSource dataSource)
     {
@@ -101,9 +108,7 @@ public class MySqlUserDao extends MySqlDaoBase implements UserDao
     @Override
     public User getByUserName(String username)
     {
-        String sql = "SELECT * " +
-                " FROM users " +
-                " WHERE username = ?";
+        String sql = "SELECT * FROM users WHERE username = ?";
 
         try (Connection connection = getConnection())
         {
@@ -111,20 +116,19 @@ public class MySqlUserDao extends MySqlDaoBase implements UserDao
             statement.setString(1, username);
 
             ResultSet row = statement.executeQuery();
-            if(row.next())
-            {
-
+            if (row.next()) {
                 User user = mapRow(row);
+                logger.debug("Loaded user: {}, hashed_password: {}", user.getUsername(), user.getPassword());
                 return user;
             }
-        }
-        catch (SQLException e)
-        {
-            System.out.println(e);
+        } catch (SQLException e) {
+            logger.error("Error fetching user by username '{}': {}", username, e.getMessage());
+            throw new RuntimeException("Database error occurred while fetching user.", e);
         }
 
         return null;
     }
+
 
     @Override
     public int getIdByUsername(String username)

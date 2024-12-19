@@ -25,7 +25,7 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
 
     @Override
     public ShoppingCart getByUserId(int userId) {
-        String query = "SELECT products.product_id, products.name, products.price shopping_cart.quantity " +
+        String query = "SELECT products.product_id, products.name, products.price, shopping_cart.quantity " +
                 "FROM shopping_cart " +
                 "JOIN products ON " +
                 "shopping_cart.product_id = products.product_id " +
@@ -50,41 +50,30 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
     }
     @Override
     public ShoppingCart addProduct(int productId, int userId) {
+
+
         ShoppingCart cart = getByUserId(userId);
         Product product = productDao.getById(productId);
 
         ShoppingCartItem existingItem = cart.get(productId);
-
-        if (existingItem != null) {
-            existingItem.setQuantity(existingItem.getQuantity() + 1);
-
-
-            String query = "UPDATE shopping_cart SET quantity = ? WHERE user_id = ? AND product_id = ?";
-            try (Connection connection = getConnection()) {
-                PreparedStatement statement = connection.prepareStatement(query);
-                statement.setInt(1, existingItem.getQuantity());
-                statement.setInt(2, userId);
-                statement.setInt(3, productId);
-                statement.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } else {
-            ShoppingCartItem newItem = new ShoppingCartItem(product);
-            newItem.setQuantity(1);
-            cart.add(newItem);
-
+        int quantity= existingItem.getQuantity();
+        if(existingItem == null || quantity == 0 ) {
+            quantity = 1;
+        }
             String query = "INSERT INTO shopping_cart (user_id, product_id, quantity) VALUES (?, ?, ?)";
             try (Connection connection = getConnection()) {
+
                 PreparedStatement statement = connection.prepareStatement(query);
                 statement.setInt(1, userId);
-                statement.setInt(2, productId);
-                statement.setInt(3, 1);  // Initial quantity is 1
+                statement.setInt(2, product.getProductId());
+                statement.setInt(3, quantity);
                 statement.executeUpdate();
+
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
+
 
         return cart;
     }

@@ -66,8 +66,6 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
                     getByIdStatement.setString(7, profile.getCity());
                     getByIdStatement.setString(8, profile.getState());
                     getByIdStatement.setString(9, profile.getZip());
-
-
                 }
             }
         }catch(SQLException e){

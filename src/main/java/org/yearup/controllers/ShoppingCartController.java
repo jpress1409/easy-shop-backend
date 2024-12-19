@@ -11,12 +11,12 @@ import org.yearup.data.mysql.interfaces.UserDao;
 import org.yearup.models.ShoppingCart;
 import org.yearup.models.User;
 
-import javax.imageio.plugins.tiff.GeoTIFFTagSet;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("cart")
+@RequestMapping("/cart")
 @CrossOrigin
+@PreAuthorize("hasRole('ROLE_USER')")
 public class ShoppingCartController
 {
     // a shopping cart requires
@@ -32,8 +32,7 @@ public class ShoppingCartController
     }
 
     // each method in this controller requires a Principal object as a parameter
-    //@PreAuthorize("isAuthenticated()")
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     @PreAuthorize("hasRole('ROLE_USER')")
     public ShoppingCart getCart(Principal principal)
     {
@@ -57,10 +56,10 @@ public class ShoppingCartController
 
     // add a POST method to add a product to the cart - the url should be
     // https://localhost:8080/cart/products/15 (15 is the productId to be added
-    @PostMapping("products/{id}")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping("/products/{id}")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ShoppingCart addProduct(@PathVariable int id, Principal principal){
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ShoppingCart addProduct(Principal principal, @PathVariable int id){
 
         try {
             String userName = principal.getName();
@@ -73,9 +72,9 @@ public class ShoppingCartController
         }
     }
 
-    @PutMapping(path = "products/{id}")
+    @PutMapping(path = "/products/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public void update(@PathVariable int id, @RequestBody ShoppingCart cart, Principal principal){
+    public void update(Principal principal, @PathVariable int id, @RequestBody ShoppingCart cart){
         try {
             String userName = principal.getName();
             User user = userDao.getByUserName(userName);
@@ -87,9 +86,9 @@ public class ShoppingCartController
         }
     }
     @DeleteMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Principal principal){
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public void delete(Principal principal){
         try{
             String username = principal.getName();
             User user = userDao.getByUserName(username);
