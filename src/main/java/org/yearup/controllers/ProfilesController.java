@@ -49,6 +49,24 @@ public class ProfilesController {
 
         return profile;
     }
+    @PutMapping
+    public void updateProfile(Principal principal, @RequestBody Profile profile){
+        try{
+            String userName = principal.getName();
+            User user = userDao.getByUserName(userName);
+
+            if (user == null) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
+            }
+            int userId = user.getId();
+            profileDao.update(userId, profile);
+        }catch(Exception e){
+            System.err.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
+    }
+
     }
 
 

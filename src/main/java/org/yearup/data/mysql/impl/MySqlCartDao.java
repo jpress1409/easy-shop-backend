@@ -49,53 +49,37 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
         return cart;
     }
     @Override
-    public ShoppingCart addProduct(int productId, int userId) {
+    public ShoppingCart addProduct(int productId, int userId, int quantity) {
 
+            String query = "INSERT INTO shopping_cart (user_id, product_id, quantity) VALUES (?,?,?) ON DUPLICATE KEY UPDATE quantity = quantity + ?";
 
-        ShoppingCart cart = getByUserId(userId);
-        Product product = productDao.getById(productId);
-
-        ShoppingCartItem existingItem = cart.get(productId);
-        int quantity= existingItem.getQuantity();
-        if(existingItem == null || quantity == 0 ) {
-            quantity = 1;
-        }
-            String query = "INSERT INTO shopping_cart (user_id, product_id, quantity) VALUES (?, ?, ?)";
             try (Connection connection = getConnection()) {
-
-                PreparedStatement statement = connection.prepareStatement(query);
-                statement.setInt(1, userId);
-                statement.setInt(2, product.getProductId());
-                statement.setInt(3, quantity);
-                statement.executeUpdate();
-
-
+                    PreparedStatement statement = connection.prepareStatement(query);
+                    statement.setInt(1, userId);
+                    statement.setInt(2, productId);
+                    statement.setInt(3, quantity);
+                    statement.setInt(4, quantity);
+                    statement.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
 
 
-        return cart;
+        return getByUserId(userId);
     }
 
 
     @Override
-    public ShoppingCart updateCart(int productId, int userId, ShoppingCart cart) {
-        String query = "UPDATE shopping_cart SET quantity = quantity + 1 WHERE product_id = ? AND user_id = ?";
+    public void updateCart(int productId, int userId, int quantity) {
+        String query = "UPDATE shopping_cart SET quantity = ? WHERE product_id = ? AND user_id = ?";
 
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
 
-            statement.setInt(1, productId);
+            statement.setInt(1, quantity);
             statement.setInt(2, userId);
+            statement.setInt(3, productId);
 
-            int rowsAffected = statement.executeUpdate();
-
-            if (rowsAffected > 0) {
-                return getByUserId(userId);
-            } else {
-                throw new SQLException("Product not found in cart.");
-            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Error updating cart", e);
@@ -115,6 +99,7 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
         }
         catch (SQLException e)
         {
+            System.err.println("Error: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }

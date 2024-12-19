@@ -9,6 +9,7 @@ import org.yearup.data.mysql.interfaces.ProductDao;
 import org.yearup.data.mysql.interfaces.ShoppingCartDao;
 import org.yearup.data.mysql.interfaces.UserDao;
 import org.yearup.models.ShoppingCart;
+import org.yearup.models.ShoppingCartItem;
 import org.yearup.models.User;
 
 import java.security.Principal;
@@ -66,7 +67,7 @@ public class ShoppingCartController
             User user = userDao.getByUserName(userName);
             int userId = user.getId();
 
-            return shoppingCartDao.addProduct(id, userId);
+            return shoppingCartDao.addProduct(id, userId, 1);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
@@ -74,13 +75,14 @@ public class ShoppingCartController
 
     @PutMapping(path = "/products/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public void update(Principal principal, @PathVariable int id, @RequestBody ShoppingCart cart){
+    public ShoppingCart update(Principal principal, @PathVariable int id, @RequestBody ShoppingCartItem item){
         try {
             String userName = principal.getName();
             User user = userDao.getByUserName(userName);
             int userId = user.getId();
 
-            shoppingCartDao.updateCart(id, userId, cart);
+            shoppingCartDao.updateCart(id, userId, item.getQuantity());
+            return shoppingCartDao.getByUserId(userId);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
@@ -88,26 +90,18 @@ public class ShoppingCartController
     @DeleteMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ROLE_USER')")
-    public void delete(Principal principal){
+    public ShoppingCart delete(Principal principal){
         try{
             String username = principal.getName();
             User user = userDao.getByUserName(username);
             int userId = user.getId();
 
             shoppingCartDao.deleteCart(userId);
+            return shoppingCartDao.getByUserId(userId);
         }catch(Exception ex){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
 }
-
-
-    // add a PUT method to update an existing product in the cart - the url should be
-    // https://localhost:8080/cart/products/15 (15 is the productId to be updated)
-    // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated
-
-
-    // add a DELETE method to clear all products from the current users cart
-    // https://localhost:8080/cart
 
 
