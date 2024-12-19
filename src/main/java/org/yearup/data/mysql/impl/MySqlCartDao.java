@@ -90,9 +90,9 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
         String sql = "DELETE FROM shopping_cart " +
                 " WHERE user_id = ?;";
 
-        try (Connection connection = getConnection())
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql))
         {
-            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, userId);
 
             statement.executeUpdate();

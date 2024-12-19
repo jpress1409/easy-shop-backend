@@ -56,16 +56,8 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
 
             try(ResultSet results = getByIdStatement.executeQuery()){
                 if(results.next()){
-                    profile = new Profile();
-                    getByIdStatement.setInt(1, profile.getUserId());
-                    getByIdStatement.setString(2, profile.getFirstName());
-                    getByIdStatement.setString(3, profile.getLastName());
-                    getByIdStatement.setString(4, profile.getPhone());
-                    getByIdStatement.setString(5, profile.getEmail());
-                    getByIdStatement.setString(6, profile.getAddress());
-                    getByIdStatement.setString(7, profile.getCity());
-                    getByIdStatement.setString(8, profile.getState());
-                    getByIdStatement.setString(9, profile.getZip());
+                    return mapRow(results);
+
                 }
             }
         }catch(SQLException e){
@@ -79,23 +71,37 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
         String sql = "UPDATE profiles SET first_name = ?, last_name = ?, phone = ?, email = ?, address = ?, city = ?, state = ?, zip = ?  WHERE user_id = ?";
 
         try (Connection connection = getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
 
-            ps.setString(1, profile.getFirstName());
-            ps.setString(2, profile.getLastName());
-            ps.setString(3, profile.getPhone());
-            ps.setString(4, profile.getEmail());
-            ps.setString(5, profile.getAddress());
-            ps.setString(6, profile.getCity());
-            ps.setString(7, profile.getState());
-            ps.setString(8, profile.getZip());
-            ps.setInt(9, userId);
+            statement.setString(1, profile.getFirstName());
+            statement.setString(2, profile.getLastName());
+            statement.setString(3, profile.getPhone());
+            statement.setString(4, profile.getEmail());
+            statement.setString(5, profile.getAddress());
+            statement.setString(6, profile.getCity());
+            statement.setString(7, profile.getState());
+            statement.setString(8, profile.getZip());
+            statement.setInt(9, userId);
 
-            ps.executeUpdate();
+            statement.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException("Error updating user profile", e);
         }
     }
+    private Profile mapRow(ResultSet row) throws SQLException
+    {
 
+        int userId = row.getInt("user_id");
+        String firstName = row.getString("first_name");
+        String lastName = row.getString("last_name");
+        String phone = row.getString("phone");
+        String email = row.getString("email");
+        String address = row.getString("address");
+        String city = row.getString("city");
+        String state = row.getString("state");
+        String zip = row.getString("zip");
+
+        return new Profile(userId,firstName,lastName,phone,email,address,city,state,zip);
+    }
 }

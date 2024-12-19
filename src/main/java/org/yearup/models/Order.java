@@ -1,8 +1,10 @@
 package org.yearup.models;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 import java.util.List;
 
 public class Order {
@@ -10,21 +12,22 @@ public class Order {
     private int orderId;
     private int userId;
     private Date orderDate;
-    private List<ShoppingCartItem> items = new ArrayList<>();
+    private List<LineItem> items = new ArrayList<>();
     private String address;
     private String city;
     private String state;
     private String zip;
-    private double shippingAmount;
+    private BigDecimal shippingAmount;
     private int lineId;
 
-    public Order() {
-    }
-
-    public Order(int orderId, int userId, Date orderDate) {
-        this.orderId = orderId;
+    public Order(int userId, Date orderDate, String address, String city, String state, String zip, BigDecimal shippingAmount) {
         this.userId = userId;
         this.orderDate = orderDate;
+        this.address = address;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+        this.shippingAmount = shippingAmount;
     }
 
     public int getLineId() {
@@ -59,22 +62,16 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    public List<ShoppingCartItem> getItems() {
+    public List<LineItem> getItems() {
         return items;
     }
 
-    public void setItems(List<ShoppingCartItem> items) {
+    public void setItems(List<LineItem> items) {
         this.items = items;
     }
 
-    public void addItem(ShoppingCartItem item) {
+    public void addItem(LineItem item) {
         this.items.add(item);
-    }
-
-    public BigDecimal getTotal() {
-        return items.stream()
-                .map(ShoppingCartItem::getLineTotal)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public String getAddress() {
@@ -109,11 +106,14 @@ public class Order {
         this.zip = zip;
     }
 
-    public double getShippingAmount() {
+    public BigDecimal getShippingAmount() {
         return shippingAmount;
     }
 
-    public void setShippingAmount(double shippingAmount) {
+    public void setShippingAmount(BigDecimal shippingAmount) {
         this.shippingAmount = shippingAmount;
+    }
+    public void add(LineItem item) {
+        items.add(item);
     }
 }

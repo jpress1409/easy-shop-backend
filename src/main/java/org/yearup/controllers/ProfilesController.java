@@ -11,6 +11,8 @@ import org.yearup.models.User;
 import org.yearup.models.Profile;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("profile")
@@ -26,28 +28,21 @@ public class ProfilesController {
         this.userDao = userDao;
     }
     @GetMapping
-    @PreAuthorize("permitAll()")
-    public Profile getById(Principal principal){
-        if (principal == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authentication required");
-        }
+    public Profile getByUserId(Principal principal){
+        try{
+            String userName = principal.getName();
+            User user = userDao.getByUserName(userName);
 
-        Profile profile = null;
-        try {
-            String username = principal.getName();
-            User user = userDao.getByUserName(username);
-            if (user != null) {
-                profile = profileDao.getById(user.getId());
+            if (user == null) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
             }
-        } catch (Exception ex) {
+            int userId = user.getId();
+            return profileDao.getById(userId);
+        }catch(Exception e){
+            System.err.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
-
-        if (profile == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Profile not found.");
-        }
-
-        return profile;
     }
     @PutMapping
     public void updateProfile(Principal principal, @RequestBody Profile profile){
