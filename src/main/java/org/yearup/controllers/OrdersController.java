@@ -12,6 +12,7 @@ import org.yearup.models.*;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,8 +59,7 @@ public class OrdersController {
     @PostMapping
     @PreAuthorize("hasRole('ROLE_USER')")
     public Order create(Principal principal){
-        long now = System.currentTimeMillis();
-        Date date = new Date(now);
+        Date date = Date.valueOf(LocalDate.now());
 
 
 
