@@ -14,16 +14,6 @@ public class ShoppingCartItem
         this.product = product;
     }
 
-    public Product getProduct()
-    {
-        return product;
-    }
-
-    public void setProduct(Product product)
-    {
-        this.product = product;
-    }
-
     public int getQuantity()
     {
         return quantity;
@@ -33,17 +23,6 @@ public class ShoppingCartItem
     {
         this.quantity = quantity;
     }
-
-    public BigDecimal getDiscountPercent()
-    {
-        return discountPercent;
-    }
-
-    public void setDiscountPercent(BigDecimal discountPercent)
-    {
-        this.discountPercent = discountPercent;
-    }
-
 
     @JsonIgnore
     public int getProductId()

@@ -21,19 +21,9 @@ public class ShoppingCart
         this.items = items;
     }
 
-    public boolean contains(int productId)
-    {
-        return items.containsKey(productId);
-    }
-
     public void add(ShoppingCartItem item)
     {
         items.put(item.getProductId(), item);
-    }
-
-    public ShoppingCartItem get(int productId)
-    {
-        return items.get(productId);
     }
 
     public BigDecimal getTotal()

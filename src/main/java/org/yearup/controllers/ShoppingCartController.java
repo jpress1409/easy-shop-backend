@@ -88,7 +88,6 @@ public class ShoppingCartController
         }
     }
     @DeleteMapping
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ShoppingCart delete(Principal principal){
         try{

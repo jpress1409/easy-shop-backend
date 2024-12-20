@@ -11,8 +11,4 @@ public interface OrdersDao {
     Order getByUserId(int userId);
 
     Order create(Order order);
-
-   LineItem toLineItem(ShoppingCartItem item, Order order);
-
-   LineItem createLineItem(LineItem orderItem);
 }

@@ -77,39 +77,4 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrdersDao {
         }
         return null;
     }
-
-
-    @Override
-    public LineItem toLineItem(ShoppingCartItem item, Order order){
-        return new LineItem(order.getOrderId(), item.getProductId(), item.getProduct().getPrice(), item.getQuantity(), BigDecimal.ZERO);
-    }
-    @Override
-    public LineItem createLineItem(LineItem orderItem) {
-        String sql = "INSERT INTO order_line_items (order_id, product_id, sales_price, quantity, discount) VALUES (?,?,?,?,?)";
-
-        try(Connection connection = getConnection()){
-            PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            statement.setInt(1,orderItem.getOrderId());
-            statement.setInt(2,orderItem.getProductId());
-            statement.setBigDecimal(3,orderItem.getSalesPrice());
-            statement.setInt(4,orderItem.getQuantity());
-            statement.setBigDecimal(5,orderItem.getDiscount());
-            int rows = statement.executeUpdate();
-
-            if(rows==0)throw new SQLException("Failed to add product");
-
-            try(ResultSet generatedKeys = statement.getGeneratedKeys()){
-                if(generatedKeys.next()){
-                    int generatedId = generatedKeys.getInt(1);
-                    orderItem.setLineItemId(generatedId);
-                    return orderItem;
-                }
-
-            }
-
-        }catch(Exception e){
-            throw new RuntimeException("Error adding to cart", e);
-        }
-        return null;
-    }
 }
