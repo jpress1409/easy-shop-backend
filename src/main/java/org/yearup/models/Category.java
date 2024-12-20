@@ -15,6 +15,12 @@ public class Category
         this.name = name;
         this.description = description;
     }
+
+    public int getCategoryId(){
+        return categoryId;
+    }
+
+
     public void setCategoryId(int categoryId)
     {
         this.categoryId = categoryId;
